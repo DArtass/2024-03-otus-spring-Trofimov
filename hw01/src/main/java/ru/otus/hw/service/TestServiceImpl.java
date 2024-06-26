@@ -15,12 +15,15 @@ public class TestServiceImpl implements TestService {
     public void executeTest() {
         ioService.printLine("");
         ioService.printFormattedLine("Please answer the questions below%n");
-        // Получить вопросы из дао и вывести их с вариантами ответов
         for (Question question : questionDao.findAll()) {
-            ioService.printLine(question.getQuestionText());
-            for (Answer option : question.getAnswerOptions()) {
-                ioService.printLine(option.getAnswerText());
-            }
+            printQuestionAndAnswers(question);
+        }
+    }
+
+    private void printQuestionAndAnswers(Question question) {
+        ioService.printLine(question.getQuestionText());
+        for (Answer option : question.getAnswerOptions()) {
+            ioService.printLine(option.text());
         }
     }
 }
