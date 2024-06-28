@@ -1,6 +1,7 @@
 package ru.otus.hw.service;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
@@ -30,13 +31,18 @@ public class TestServiceImplTest {
 
         testService.executeTest();
 
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
         verify(ioService, times(1)).printLine("");
         verify(ioService, times(1)).printFormattedLine("Please answer the questions below%n");
         for (Question question : questions) {
-            verify(ioService, times(1)).printLine(question.getQuestionText());
-            for (Answer answer : question.getAnswerOptions()) {
+            verify(ioService, times(1)).printLine(question.text());
+            for (Answer answer : question.answers()) {
                 verify(ioService, times(1)).printLine(answer.text());
             }
         }
+
+        List<String> capturedArguments = captor.getAllValues();
+        capturedArguments.forEach(System.out::println);
     }
 }

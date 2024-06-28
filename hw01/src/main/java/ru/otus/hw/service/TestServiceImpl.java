@@ -9,6 +9,7 @@ import ru.otus.hw.domain.Question;
 public class TestServiceImpl implements TestService {
 
     private final IOService ioService;
+
     private final QuestionDao questionDao;
 
     @Override
@@ -21,8 +22,8 @@ public class TestServiceImpl implements TestService {
     }
 
     private void printQuestionAndAnswers(Question question) {
-        ioService.printLine(question.getQuestionText());
-        for (Answer option : question.getAnswerOptions()) {
+        ioService.printLine(question.text());
+        for (Answer option : question.answers()) {
             ioService.printLine(option.text());
         }
     }
