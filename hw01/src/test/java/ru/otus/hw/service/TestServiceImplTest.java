@@ -9,6 +9,7 @@ import ru.otus.hw.domain.Question;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.*;
 
 public class TestServiceImplTest {
@@ -31,18 +32,9 @@ public class TestServiceImplTest {
 
         testService.executeTest();
 
-        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-
-        verify(ioService, times(1)).printLine("");
         verify(ioService, times(1)).printFormattedLine("Please answer the questions below%n");
-        for (Question question : questions) {
-            verify(ioService, times(1)).printLine(question.text());
-            for (Answer answer : question.answers()) {
-                verify(ioService, times(1)).printLine(answer.text());
-            }
-        }
-
-        List<String> capturedArguments = captor.getAllValues();
-        capturedArguments.forEach(System.out::println);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        verify(ioService, times(7)).printLine(captor.capture());
+        assertThat(captor.getAllValues()).containsExactlyInAnyOrder("", "Question 1", "Answer 1", "Answer 2", "Question 2", "Answer 3", "Answer 4");
     }
 }
